@@ -88,7 +88,7 @@ const fileWrite = (filename,data) =>{
 
 const main = async () =>{
     try{
-        await fileWrite('data2.txt','Nov file so zapis od promise')
+        await fileWrite('data3.txt','Nov3 file so zapis od promise')
     }
     catch(err){
         console.log(err);
