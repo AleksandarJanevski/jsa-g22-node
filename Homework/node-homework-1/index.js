@@ -5,14 +5,14 @@ const path = require('path');
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // PROMISES
 const Folder = (name) =>{
-    return new Promise((success,fail)=>{
+    return new Promise((success, fail)=>{
         fs.mkdir(path.join(__dirname, name), (err)=>{
             if (err) return fail(err);
             return success();
         })
     })
 };
-const File = (name,file,text) =>{
+const File = (name, file, text) =>{
     return new Promise((success,fail)=>{
         fs.writeFile(`${name}/${file}`, text, {flag: "wx"}, (err) => { // { overwrite: false }
             if (err) return fail(err);
@@ -21,8 +21,8 @@ const File = (name,file,text) =>{
     })
 };
 
-const secondFile = (file,text) =>{
-    return new Promise((success,fail)=>{
+const secondFile = (file, text) =>{
+    return new Promise((success, fail)=>{
         fs.writeFile(file, text, {flag: "wx"}, (err) => { // { overwrite: false }
             if (err) return fail(err);
             return success();
@@ -41,28 +41,28 @@ function refreshDir () {
 const RemoveDirectory = (name) =>{
     return new Promise((success,fail)=>{
        fs.rmdir(name,{recursive: true}, (err) => { // fs.rm(path, { recursive: true, force: true }) 
-    if(err){
-        return fail(err)
-    }
-    success()
-    refreshDir();
-  })
-    })
+            if(err){
+                return fail(err);
+            }
+            return success();
+        });
+    });
 };
 
 const RemoveFile = (name) =>{
-    return new Promise((success,fail)=>{
+    return new Promise((success, fail)=>{
         fs.unlink(name,(err) => {
-     if(err){
-         return fail(err)}
-        success()    
+            if(err){
+                return fail(err);
+            }
+            return success(); 
         })
     })
 };
 
 const readFile = (name) =>{
-    return new Promise((success,fail) =>{
-        fs.readFile(`${__dirname}/${name}`,'utf8',(err,data) => {
+    return new Promise((success, fail) =>{
+        fs.readFile(`./${name}`, 'utf8', (err,data) => {
             if(err){
                 return fail(err)}
                success(console.log(data))    
@@ -79,20 +79,16 @@ const openFolder = (name) =>{
     return new Promise((success,fail) =>{
         fs.opendir(name,(err,dir)=>{
             if(err) return fail(err)
-            success(
-                console.log('Entered ' + dir.path + ':'),
-                listDir(name)
-            )
+            success()
         })
     })
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // ASYNC
-const create = async (name,file,text) =>{
+const create = async (name, file, text) =>{
     try{
         await Folder(name);
         await File(name,file,text);
-       
     }
     catch(err){
         console.log(err);
@@ -106,11 +102,9 @@ const createFolder = async (name) =>{
         console.log(err);
     }
 }
-const createFile = async (file,text) =>{
+const createFile = async (file, text) =>{
     try{
-        
-        await secondFile(file,text);
-       
+        await secondFile(file, text);
     }
     catch(err){
         console.log(err);
